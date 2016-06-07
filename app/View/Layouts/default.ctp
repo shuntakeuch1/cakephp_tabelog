@@ -34,6 +34,7 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		echo $this->fetch('css');
 		echo $this->fetch('script');
 	?>
+	<?php echo $this->Html->script('jquery-1.12.4.min.js');?>
 </head>
 <body>
 	<div id="container">
@@ -43,6 +44,11 @@ $cakeVersion = __d('cake_dev', 'CakePHP %s', Configure::version())
 		<div id="content">
 
 			<?php echo $this->Flash->render(); ?>
+
+<?php
+if (empty($isLogin)) $isLogin = false;
+ echo $this->element('header',array('isLogin' => $isLogin));
+			?>
 
 			<?php echo $this->fetch('content'); ?>
 		</div>
