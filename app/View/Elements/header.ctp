@@ -25,6 +25,7 @@
 <?php endif?>
 <span style = "float:right;margin:auto 10px;">
   <?php if(!($isLogin)):?>
+    <?=$this->Html->link('Facebookログイン',array('controller' => 'users','action' => 'facebook'))?>
   <?php else :?>
     <?=$this->Html->link('設定変更',
     array('controller' => 'users','action' => 'edit'))?>

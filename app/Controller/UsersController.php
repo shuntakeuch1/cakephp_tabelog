@@ -1,5 +1,5 @@
 <?php
-
+App::import('Vendor','facebook',array('file' => 'facebook/src/facebook.php'));
 class UsersController extends AppController
 {
 
@@ -74,8 +74,6 @@ class UsersController extends AppController
    {
       if($this->request->is('post')){
 
-        //=じゃないの?
-        // $this->User->set($this->data);
         if($this->Auth->login())
         {
           $this->Session->setFlash(' ログインに成功しました','default',array(),'auth');
@@ -97,6 +95,52 @@ class UsersController extends AppController
       return $this->redirect($this->Auth->redirect());
    }
 
+   public function facebook()
+   {
+    $this->autoRender = false;
+    $this->facebook = $this->createFacebook();
+    $user = $this->facebook->getUser();
+    if($user){
+      // $myData = $this->facebook->api('/me?fields=name');
+      // $data = array(
+      //   'email' => $myData['email']
+      //   );
+      // $exist = $this->User->findByEmail($data['email']);
+      //認証後の処理
+      $myData = $this->facebook->api('/me?fields=name');
+      $data = array(
+        'name' => $myData['name']
+        );
+      $exist = $this->User->findByEmail($data['name']);
+      if(!exist)
+      {
+        $this->User->save($data);
+      }
+      //ログイン状態にする
+      $this->Auth->login($data);
+      $this->Session->setFlash('Facebookログインに成功しました','default',array(),'auth');
+      return $this->redirect($this->Auth->redirect());
+    }
+    else
+    {
+      //認証前
+      $url = $this->facebook->getLoginUrl(array(
+        'scope' => 'email'
+        )
+        );
+      $this->redirect($url);
+    }
+   }
+
+   private function createFacebook()
+   {
+    return new Facebook(array(
+      'appId' => '588555911317721',
+      'secret' => 'a790bf7f55915f43dad120a95ff93da5')
+
+      );
+
+   }
 
 }
 ?>
