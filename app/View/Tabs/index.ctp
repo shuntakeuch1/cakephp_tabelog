@@ -61,3 +61,7 @@
     Node.jsの話です<br>
     PHPのようにサーバーサイドのプログラムをjavascriptでもかけるようになります<br>
 </p>
+<?php
+var_dump( true == true);
+var_dump( 0 ==false);
+var_dump( false === false);
